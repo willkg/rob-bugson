@@ -36,18 +36,16 @@ function getPRTitle() {
  * Get list of bug ids from PR title
  */
 function getBugIds(text) {
-    let bugIds = [];
+    console.info('before match');
     let match = BUG_RE.exec(text);
+    let ret;
     if (match) {
-        match[2].split(/\D+/).forEach(function(bugId) {
-            if (bugId && bugIds.indexOf(bugId) === -1) {
-                bugIds.push(bugId);
-            }
-        });
+        ret = new Set(match[2].split(/\D+/).filter((bugId) => !!bugId));
+    } else {
+        ret = new Set();
     }
-    return bugIds;
+    return Array.from(ret);
 }
-
 
 /**
  * Return "attach links" for each of the bugs specified.
