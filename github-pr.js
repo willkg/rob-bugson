@@ -6,10 +6,10 @@
  */
 
 // Regexp to match against PR title
-var bugRe = /\b(ticket|bug|tracker item|issue)s?:? *([\d ,\+&#and]+)\b/i;
+const BUG_RE = /\b(ticket|bug|tracker item|issue)s?:? *([\d ,\+&#and]+)\b/i;
 
 // Base url for attaching a github pr to a bug
-var BASEURL = "https://bugzilla.mozilla.org/attachment.cgi?action=enter&bugid=";
+const BASE_URL = "https://bugzilla.mozilla.org/attachment.cgi?action=enter&bugid=";
 
 
 /**
@@ -37,7 +37,7 @@ function getPRTitle() {
  */
 function getBugIds(text) {
     let bugIds = [];
-    let match = bugRe.exec(text);
+    let match = BUG_RE.exec(text);
     if (match) {
         match[2].split(/\D+/).forEach(function(bugId) {
             if (bugId && bugIds.indexOf(bugId) === -1) {
@@ -63,7 +63,7 @@ function getAttachLinks(bugIds, prURL, prNum, prTitle) {
         link.addEventListener("click", (event) => {
             // Send a message to the background script. That handles creating a
             // tab, opening the attach page, and filling in the form.
-            let url = BASEURL + bugId;
+            let url = BASE_URL + bugId;
             browser.runtime.sendMessage({
                 "attachUrl": url,
                 "prURL": prURL,
@@ -102,12 +102,9 @@ function createAttachLinks() {
             linkContainer.appendChild(bugLink);
         });
     }
-
     return linkContainer;
 }
 
 
-(function addAttachLinksToPage() {
-    var headerShow = document.querySelector('div.gh-header-show');
-    headerShow.appendChild(createAttachLinks());
-})();
+let headerShow = document.querySelector('div.gh-header-show');
+headerShow.appendChild(createAttachLinks());
