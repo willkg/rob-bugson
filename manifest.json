@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "rob-bugson",
+    "version": "1.0",
+    "description": "Add 'Attach to bug' link to Bugzilla for GitHub pull requests.",
+    "homepage_url": "https://github.com/willkg/rob-bugson",
+    "icons": {
+        "48": "icons/rob-bugson-48.png"
+    },
+    "permissions": [
+        "*://github.com/*",
+        "*://bugzilla.mozilla.org/*",
+        "tabs"
+    ],
+    "background": {
+        "scripts": [
+            "github-pr-background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://github.com/*/*/pull/*"
+            ],
+            "js": [
+                "github-pr.js"
+            ]
+        }
+    ]
+}
