@@ -69,7 +69,6 @@ async function createAttachTab(msg) {
         desc.value = "${descValue}";
         att.focus();
     `;
-    console.info(attachScript);
 
     await browser.tabs.executeScript(newTab.id, {
         code: attachScript
