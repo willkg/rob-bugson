@@ -7,6 +7,20 @@
 browser.runtime.onMessage.addListener(createAttachTab);
 
 /**
+ * Sanitize text for inserting into JavaScript template.
+ */
+function sanitizeForTemplate(text) {
+    // Escape all \
+    text = text.replace(/\\/g, "\\\\");
+
+    // Escape all "
+    text = text.replace(/"/g, "\\\"");
+
+    return text;
+}
+
+
+/**
  * Retrieve the currently active tab.
  */
 async function getActiveTab() {
@@ -36,8 +50,8 @@ async function createAttachTab(msg) {
         openerTabId: tabId,
         index: tabId
     });
-    var attValue = msg.prURL;
-    var descValue = "pr " + msg.prNum + ": " + msg.prTitle;
+    var attValue = sanitizeForTemplate(msg.prURL);
+    var descValue = sanitizeForTemplate("pr " + msg.prNum + ": " + msg.prTitle);
 
     // We need to add values for this specific attachment, so we
     // build the template with local values and then execute the
@@ -55,6 +69,7 @@ async function createAttachTab(msg) {
         desc.value = "${descValue}";
         att.focus();
     `;
+    console.info(attachScript);
 
     await browser.tabs.executeScript(newTab.id, {
         code: attachScript

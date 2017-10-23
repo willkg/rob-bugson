@@ -36,7 +36,6 @@ function getPRTitle() {
  * Get list of bug ids from PR title
  */
 function getBugIds(text) {
-    console.info('before match');
     let match = BUG_RE.exec(text);
     let ret;
     if (match) {
