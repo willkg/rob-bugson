@@ -20,7 +20,7 @@
     "content_scripts": [
         {
             "matches": [
-                "*://github.com/*/*/pull/*"
+                "*://github.com/*"
             ],
             "js": [
                 "github-pr.js"

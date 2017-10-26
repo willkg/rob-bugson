@@ -1,16 +1,17 @@
 "use strict";
 
 /**
- * Content script that runs in the context of github pull request web pages and
- * adds "attach to bug" link.
+ * Content script that runs in the context of github web pages, susses out PR
+ * page, and adds "attach to bug" links.
  */
 
 // Regexp to match against PR title
 const BUG_RE = /\b(ticket|bug|tracker item|issue)s?:? *([\d ,\+&#and]+)\b/i;
 
 // Base url for attaching a github pr to a bug
-const BASE_URL = "https://bugzilla.mozilla.org/attachment.cgi?action=enter&bugid=";
+const BASE_URL = 'https://bugzilla.mozilla.org/attachment.cgi?action=enter&bugid=';
 
+const CONTAINER_ID = 'robBugsonAttachLinks';
 
 /**
  * Retrieve the PR number from the pull request page.
@@ -47,7 +48,7 @@ function getBugIds(text) {
 }
 
 /**
- * Return "attach links" for each of the bugs specified.
+ * Return array of "attach links"--one for each bug.
  *
  * Attach links are set up with an event listener to sends the data to the
  * background script for opening and manipulating the new tab.
@@ -77,31 +78,51 @@ function getAttachLinks(bugIds, prURL, prNum, prTitle) {
 
 
 /**
- * Creates the "Attach to bug: " text and link nodes and returns them.
+ * Checks if there's already a container and if not, creates one with attach
+ * links in it.
  */
-function createAttachLinks() {
+function createAttachLinksContainer() {
+    // If this is not a pull request page, then return.
+    if (! /^https:\/\/github.com\/[^\/]+\/[^\/]+\/pull\//.test(window.location.href)) {
+        return;
+    }
+
+    // If there's already a link container, then return.
+    var linkContainer = document.getElementById(CONTAINER_ID);
+    if (linkContainer == null) {
+        // If there's no link container, then we create a new one
+        linkContainer = document.createElement('p');
+        linkContainer.id = CONTAINER_ID;
+        linkContainer.className = 'subtext';
+    }
+
+    // Remove everything from the link container so we don't end up with
+    // duplicates
+    while (linkContainer.firstChild) {
+        linkContainer.removeChild(linkContainer.firstChild);
+    }
+
+    let headerShow = document.querySelector('div.gh-header-show');
+
     var prURL = window.location.href;
     var prNum = getPRNum();
     var prTitle = getPRTitle();
 
     var bugIds = getBugIds(prTitle);
 
-    var linkContainer = document.createElement('p');
-    linkContainer.className = 'subtext';
     if (bugIds.length > 0) {
         linkContainer.appendChild(document.createTextNode('Attach to bug: '));
 
         var separator = document.createTextNode(', ');
-        getAttachLinks(bugIds, prURL, prNum, prTitle).forEach(function(bugLink, i) {
+        getAttachLinks(bugIds, prURL, prNum, prTitle).forEach((bugLink, i) => {
             if (i > 0) {
                 linkContainer.appendChild(separator.cloneNode(false));
             }
             linkContainer.appendChild(bugLink);
         });
     }
-    return linkContainer;
+
+    headerShow.appendChild(linkContainer);
 }
 
-
-let headerShow = document.querySelector('div.gh-header-show');
-headerShow.appendChild(createAttachLinks());
+createAttachLinksContainer();
