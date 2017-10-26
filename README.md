@@ -15,10 +15,11 @@ GitHub and Mozilla's Bugzilla instance.
 ## Contributors
 
 * Will Kahn-Greene
-* Paul Maclanahan: I based some of my code on his
 * Dietrich Ayala: wrote Github-Bugzilla-Tweaks and I based the methodology
   on that
-* Mike Cooper: did a code review which helped a ton
+* Paul Maclanahan
+* Mike Cooper
+* Mike Kelly
 * you could be here!
 
 
