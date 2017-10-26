@@ -26,5 +26,10 @@
                 "github-pr.js"
             ]
         }
-    ]
+    ],
+    "applications": {
+        "gecko": {
+            "id": "{ab950bab-858f-4d27-ad02-7d4b96e2430a}"
+        }
+    }
 }
