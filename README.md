@@ -4,7 +4,7 @@ This is a GitHub/Bugzilla mashup extension that eases the great divide between
 GitHub and Mozilla's Bugzilla instance.
 
 
-## Features:
+## Features
 
 * adds an "Attach to bug" link to pull request pages that reference a bug
   number in the summary
