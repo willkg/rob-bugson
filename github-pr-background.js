@@ -59,8 +59,7 @@ async function createAttachTab(msg) {
     var attachScript = `
         // switch from upload-file to paste-text attachment
         if (document.querySelector(".attachment_text_field.bz_tui_hidden")) {
-            document.TUI_toggle_class("attachment_text_field");
-            document.TUI_toggle_class("attachment_data");
+            document.getElementById("attachment_data_controller").click();
         }
 
         let att = document.getElementById("attach_text");
