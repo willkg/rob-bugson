@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.2 (October 27th, 2017)
+
+* bug: Implement a MutationObserver to handle pjax (#6)
+* bug: Add add-on ID to manifest.
+* bug: Fix mode switching on attach page (#4)
+
+
 ## v1.1 (October 23rd, 2017)
 
 * bug: Sanitize title and url so they work in the template. (#3)
