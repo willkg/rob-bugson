@@ -78,12 +78,25 @@ function getAttachLinks(bugIds, prURL, prNum, prTitle) {
 
 
 /**
+ * Returns true if the URL is a github pull request page.
+ *
+ * @param {URL} url
+ * @returns {bool}
+ */
+function isPullRequest(url) {
+    return (
+        url.origin == "https://github.com"
+            && url.pathname.split("/")[3] == "pull"
+    );
+}
+
+/**
  * Checks if there's already a container and if not, creates one with attach
  * links in it.
  */
 function createAttachLinksContainer() {
     // If this is not a pull request page, then return.
-    if (! /^https:\/\/github.com\/[^\/]+\/[^\/]+\/pull\//.test(window.location.href)) {
+    if (!isPullRequest(new URL(window.location.href))) {
         return;
     }
 
