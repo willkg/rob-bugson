@@ -125,4 +125,16 @@ function createAttachLinksContainer() {
     headerShow.appendChild(linkContainer);
 }
 
+// Run for the current page in case it's a PR
 createAttachLinksContainer();
+
+// Set up an observer to handle pjax loads that might end up on a PR
+let pjaxContainer = document.getElementById('js-repo-pjax-container');
+const pjaxContainerObserver = new window.MutationObserver((mutations) => {
+    createAttachLinksContainer();
+});
+pjaxContainerObserver.observe(pjaxContainer, {
+    childList: true,
+    attributes: false,
+    characterData: false
+});
