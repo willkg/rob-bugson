@@ -45,4 +45,4 @@ Thank you!
 Thank you to MDN contributors and webextension developers who wrote up the
 documentation for webextensions, related APIs, and all the code samples!
 
-[Install it on AMO](https://addons.mozilla.org/en-US/firefox/addon/rob-bugzon/)
+[Install it on AMO](https://addons.mozilla.org/en-US/firefox/addon/rob-bugson/)
