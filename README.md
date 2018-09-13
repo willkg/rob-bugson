@@ -41,6 +41,15 @@ Use the
 [browser extension docs on MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions).
 
 
+## Release
+
+1. complete changes, update `CHANGELOG.md`
+2. `git tag -s vX.Y`
+3. `make zip`
+4. rename zip file to use version number
+5. upload zip file to AMO
+
+
 ## Acknowledgements
 
 This is inspired by Dietrich Ayala's
