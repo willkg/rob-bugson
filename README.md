@@ -35,10 +35,15 @@ If you can help someone, please comment on their issue.
 I'll merge PRs and do releases, but probably won't do anything else.
 
 
+## Development
+
+Use the
+[browser extension docs on MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions).
+
+
 ## Acknowledgements
 
-This is inspired by Dietrich
-Ayala's
+This is inspired by Dietrich Ayala's
 [Github-Bugzilla-Tweaks](https://github.com/autonome/Github-Bugzilla-Tweaks).
 Thank you!
 

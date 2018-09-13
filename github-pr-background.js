@@ -36,8 +36,8 @@ async function getActiveTab() {
 
 
 /**
- * Creates a new tab related to the currently active tab, open the
- * Bugzilla attach url, and populate the fields.
+ * Creates a new tab related to the currently active tab, open the Bugzilla
+ * attach url, and populate the fields.
  */
 async function createAttachTab(msg) {
     const tab = await getActiveTab();
@@ -53,19 +53,21 @@ async function createAttachTab(msg) {
     var attValue = sanitizeForTemplate(msg.prURL);
     var descValue = sanitizeForTemplate("pr " + msg.prNum + ": " + msg.prTitle);
 
-    // We need to add values for this specific attachment, so we
-    // build the template with local values and then execute the
-    // code in the tab.
+    // We need to add values for this specific attachment, so we build the
+    // template with local values and then execute the code in the tab.
     var attachScript = `
-        // switch from upload-file to paste-text attachment
-        if (document.querySelector(".attachment_text_field.bz_tui_hidden")) {
-            document.getElementById("attachment_data_controller").click();
-        }
-
-        let att = document.getElementById("attach_text");
-        let desc = document.getElementById("description");
+        // Add PR link
+        let att = document.getElementById("att-textarea");
         att.value = "${attValue}";
-        desc.value = "${descValue}";
+        // Trigger an input event so the textarea input handling kicks off.
+        var input_event = new Event('input', {
+            bubbles: true,
+            cancelable: true
+        });
+        att.dispatchEvent(input_event);
+        // Stomp on description with the PR title
+        let att_desc = document.getElementById("att-description");
+        att_desc.value = "${descValue}";
         att.focus();
     `;
 

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.3 (September 13th, 2018)
+
+* bug: Update addon to work with BMO changes. (#12)
+
+
 ## v1.2 (October 27th, 2017)
 
 * bug: Implement a MutationObserver to handle pjax (#6)
