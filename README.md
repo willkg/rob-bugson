@@ -8,7 +8,9 @@ GitHub and Mozilla's Bugzilla instance.
 
 * adds an "Attach to bug" link to pull request pages that reference a bug
   number in the summary
-* great name
+* adds a links to mentioned bugs to the pull request pages and compare
+  pages
+* best name ever
 * released under the MPLv2
 
 
