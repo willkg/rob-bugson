@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.4 (January 9th, 2019)
+
+* feature: add linked bug list to pull request and compare pagesl this
+  comes from merging with Github List Bugzilla Bugs. (#10)
+
+
 ## v1.3 (September 13th, 2018)
 
 * bug: Update addon to work with BMO changes. (#12)
