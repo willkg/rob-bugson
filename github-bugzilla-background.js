@@ -5,6 +5,7 @@
  */
 
 browser.runtime.onMessage.addListener(createAttachTab);
+browser.runtime.onMessage.addListener(createMergeCommentTab);
 
 /**
  * Sanitize text for inserting into JavaScript template.
@@ -40,6 +41,10 @@ async function getActiveTab() {
  * attach url, and populate the fields.
  */
 async function createAttachTab(msg) {
+    if (msg.eventName !== 'attachLink') {
+        return;
+    }
+
     const tab = await getActiveTab();
     var tabId = tab.id;
 
@@ -71,6 +76,42 @@ async function createAttachTab(msg) {
         att.focus();
     `;
 
+    await browser.tabs.executeScript(newTab.id, {
+        code: attachScript
+    });
+    console.info('done!');
+}
+
+/**
+ * Creates a new tab related to the currently active tab, open the Bugzilla
+ * bug url, and add a comment.
+ */
+async function createMergeCommentTab(msg) {
+    if (msg.eventName !== 'mergeComment') {
+        return;
+    }
+
+    const tab = await getActiveTab();
+    var tabId = tab.id;
+
+    // Create a tab with the Bugzilla attach url
+    const newTab = await browser.tabs.create({
+        url: msg.bugUrl,
+        active: true,
+        openerTabId: tabId,
+        index: tabId
+    });
+
+    var mergeComment = msg.author + ' committed PR #' + msg.prNum + ' in ' + msg.commitSha + ' ' + msg.commitUrl;
+    console.log(mergeComment);
+    mergeComment = sanitizeForTemplate(mergeComment);
+
+    var attachScript = `
+        // Add comment
+        let textarea = document.getElementById("comment");
+        textarea.value = "${mergeComment}";
+        textarea.focus();
+    `;
     await browser.tabs.executeScript(newTab.id, {
         code: attachScript
     });
