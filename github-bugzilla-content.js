@@ -18,6 +18,7 @@ const LIST_BASE_URL = 'https://bugzilla.mozilla.org/buglist.cgi?bug_id=';
 const BUG_BASE_URL = 'https://bugzilla.mozilla.org/show_bug.cgi?id=';
 
 const ATTACH_CONTAINER_ID = 'robBugsonAttachLinks';
+const MERGE_CONTAINER_ID = 'robBugsonMergeLinks';
 const LIST_CONTAINER_ID = 'robBugsonListLinks';
 
 /**
@@ -59,7 +60,7 @@ function getBugIds(text) {
  * Return array of "bugzilla links"--one for each bug.
  */
 function getBugLinks(bugIds){
-    return bugIds.map(function(k){
+    return bugIds.map(function(k) {
         let bugLink = document.createElement('a');
         bugLink.href = BUG_BASE_URL + k;
         bugLink.target = '_blank';
@@ -86,6 +87,7 @@ function getAttachLinks(bugIds, prURL, prNum, prTitle) {
             // tab, opening the attach page, and filling in the form.
             let url = ATTACH_BASE_URL + bugId;
             browser.runtime.sendMessage({
+                "eventName": "attachLink",
                 "attachUrl": url,
                 "prURL": prURL,
                 "prNum": prNum,
@@ -93,7 +95,6 @@ function getAttachLinks(bugIds, prURL, prNum, prTitle) {
             });
             event.preventDefault();
         });
-        link.className = 'bugzilla_link';
         link.appendChild(document.createTextNode(bugId));
         return link;
     });
@@ -132,7 +133,7 @@ function isComparePage(url) {
  * Checks if there's already a container and if not, creates one with attach
  * links in it.
  */
-function createAttachLinksContainer() {
+function addAttachLinksToPage() {
     // If this is not a pull request page, then return.
     if (!isPullRequest(new URL(window.location.href))) {
         return;
@@ -161,17 +162,19 @@ function createAttachLinksContainer() {
 
     var bugIds = getBugIds(prTitle);
 
-    if (bugIds.length > 0) {
-        linkContainer.appendChild(document.createTextNode('Attach to bug: '));
-
-        var separator = document.createTextNode(', ');
-        getAttachLinks(bugIds, prURL, prNum, prTitle).forEach((bugLink, i) => {
-            if (i > 0) {
-                linkContainer.appendChild(separator.cloneNode(false));
-            }
-            linkContainer.appendChild(bugLink);
-        });
+    // If there are no bug ids, just return
+    if (bugIds.length == 0) {
+        return;
     }
+    linkContainer.appendChild(document.createTextNode('Attach this PR to bug: '));
+
+    var separator = document.createTextNode(', ');
+    getAttachLinks(bugIds, prURL, prNum, prTitle).forEach((bugLink, i) => {
+        if (i > 0) {
+            linkContainer.appendChild(separator.cloneNode(false));
+        }
+        linkContainer.appendChild(bugLink);
+    });
 
     headerShow.appendChild(linkContainer);
 }
@@ -189,7 +192,7 @@ function createBugsList(bugIds){
     while (bugsListContainer.firstChild) {
         bugsListContainer.removeChild(bugsListContainer.firstChild);
     }
-    bugsListContainer.appendChild(document.createTextNode('Bugs in commits ('));
+    bugsListContainer.appendChild(document.createTextNode('View bugs in commits ('));
 
     var openAll = document.createElement('a');
     openAll.href = LIST_BASE_URL + bugIds.join(',');
@@ -237,16 +240,120 @@ function addBugListToPage() {
 }
 
 
-// Run for the current page
-createAttachLinksContainer();
-addBugListToPage();
+/**
+ * Checks if this PR has been merged and if so and there are no merge
+ * links, yet, creates them.
+ */
+function addMergeLinks() {
+    // If this is not a pull request page, then return.
+    if (!isPullRequest(new URL(window.location.href))) {
+        return;
+    }
 
+    var linkContainer = document.getElementById(MERGE_CONTAINER_ID);
+    if (linkContainer == null) {
+        // If there's no link container, then we create a new one
+        linkContainer = document.createElement('p');
+        linkContainer.id = MERGE_CONTAINER_ID;
+        linkContainer.className = 'subtext';
+    }
+
+    // Removes everything from the link container so we don't end up
+    // with duplciates
+    while (linkContainer.firstChild) {
+        linkContainer.removeChild(linkContainer.firstChild);
+    }
+
+    var prNum = getPRNum();
+    var prTitle = getPRTitle();
+    var bugIds = getBugIds(prTitle);
+
+    // If there are no bug ids, just return
+    if (bugIds.length == 0) {
+        return;
+    }
+
+    linkContainer.appendChild(document.createTextNode('Add merge comment to bug: '));
+
+    // See if there's been a merge
+    var state = document.querySelector('div.State.State--purple');
+    if (state === null) {
+        return;
+    }
+    state = state.textContent.trim();
+    if (state !== 'Merged') {
+        return;
+    }
+
+    // Find the merge commit event and the bits we want
+    let elements = document.querySelectorAll('h3.discussion-item-header');
+    var author = '';
+    var commitSha = '';
+    var commitUrl = '';
+
+    // This goes through all the events to figure out the merge commit.
+    // NOTE(willkg): this probably works poorly if someone reverted and
+    // re-merged.
+    Array.prototype.forEach.call(elements, (el) => {
+        if (el.textContent.match(/merged commit/)) {
+            author = el.querySelector('a.author').textContent.trim();
+
+            // NOTE(willkg): the a tag we want is the one that has no id or class--that's
+            // really irritating
+            let commitElem = el.querySelector('a:not([class])');
+            commitUrl = 'https://github.com' + commitElem.getAttribute('href');
+            commitSha = commitElem.textContent.trim();
+        }
+    });
+
+    let headerShow = document.querySelector('div.gh-header-show');
+    var separator = document.createTextNode(', ');
+
+    if (author && prNum && commitSha && commitUrl) {
+        let bugLinks = bugIds.map((bugId) => {
+            let link = document.createElement("a");
+            link.href = "#";
+            link.className = "merge_link";
+            link.addEventListener("click", (event) => {
+                // Send a message to the background script. That handles creating a
+                // tab, opening the bug page, and adding a comment.
+                let url = BUG_BASE_URL + bugId;
+                browser.runtime.sendMessage({
+                    "eventName": "mergeComment",
+                    "bugUrl": url,
+                    "author": author,
+                    "prNum": prNum,
+                    "commitSha": commitSha,
+                    "commitUrl": commitUrl
+                });
+                event.preventDefault();
+            });
+            link.appendChild(document.createTextNode(bugId));
+            return link;
+        });
+
+        bugLinks.forEach((bugLink, i) => {
+            if (i > 0) {
+                linkContainer.appendChild(separator.cloneNode(false));
+            }
+            linkContainer.appendChild(bugLink);
+        });
+    }
+
+    headerShow.appendChild(linkContainer);
+}
+
+// Run for the current page
+addBugListToPage();
+addAttachLinksToPage();
+addMergeLinks();
 
 // Set up an observer to handle pjax loads that might end up on a PR
 let pjaxContainer = document.getElementById('js-repo-pjax-container');
 const pjaxContainerObserver = new window.MutationObserver((mutations) => {
-    createAttachLinksContainer();
     addBugListToPage();
+    addAttachLinksToPage();
+    addMergeLinks();
 });
 pjaxContainerObserver.observe(pjaxContainer, {
     childList: true,
