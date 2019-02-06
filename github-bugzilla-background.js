@@ -102,8 +102,7 @@ async function createMergeCommentTab(msg) {
         index: tabId
     });
 
-    var mergeComment = msg.author + ' committed PR #' + msg.prNum + ' in ' + msg.commitSha + ' ' + msg.commitUrl;
-    console.log(mergeComment);
+    var mergeComment = `[${msg.author}](${msg.authorUrl}) merged [PR #${msg.prNum}: "${msg.prTitle}"](${msg.prUrl}) in [${msg.commitSha}](${msg.commitUrl}).`;
     mergeComment = sanitizeForTemplate(mergeComment);
 
     var attachScript = `

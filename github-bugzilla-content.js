@@ -42,6 +42,14 @@ function getPRTitle() {
 
 
 /**
+  * Retrieve the PR url
+  */
+function getPRUrl() {
+    return document.URL;
+}
+
+
+/**
  * Get list of bug ids from PR title
  */
 function getBugIds(text) {
@@ -266,6 +274,7 @@ function addMergeLinks() {
 
     var prNum = getPRNum();
     var prTitle = getPRTitle();
+    var prUrl = getPRUrl();
     var bugIds = getBugIds(prTitle);
 
     // If there are no bug ids, just return
@@ -323,6 +332,9 @@ function addMergeLinks() {
                     "bugUrl": url,
                     "author": author,
                     "prNum": prNum,
+                    "prUrl": prUrl,
+                    "prTitle": prTitle,
+                    "authorUrl": "https://github.com/" + author,
                     "commitSha": commitSha,
                     "commitUrl": commitUrl
                 });
