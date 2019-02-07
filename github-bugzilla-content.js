@@ -26,7 +26,7 @@ const LIST_CONTAINER_ID = 'robBugsonListLinks';
  */
 function getPRNum() {
     // Get the PR number which is like "#4099"
-    var text = document.querySelector('span.gh-header-number').textContent;
+    let text = document.querySelector('span.gh-header-number').textContent;
 
     // Peel off the "#" and return
     return text.substring(1);
@@ -67,8 +67,8 @@ function getBugIds(text) {
 /**
  * Return array of "bugzilla links"--one for each bug.
  */
-function getBugLinks(bugIds){
-    return bugIds.map(function(k) {
+function getBugLinks(bugIds) {
+    return bugIds.map((k) => {
         let bugLink = document.createElement('a');
         bugLink.href = BUG_BASE_URL + k;
         bugLink.target = '_blank';
@@ -86,7 +86,7 @@ function getBugLinks(bugIds){
  * background script for opening and manipulating the new tab.
  */
 function getAttachLinks(bugIds, prURL, prNum, prTitle) {
-    return bugIds.map(function(bugId) {
+    return bugIds.map((bugId) => {
         let link = document.createElement("a");
         link.href = "#";
         link.className = "bugzilla_link";
@@ -148,7 +148,7 @@ function addAttachLinksToPage() {
     }
 
     // If there's already a link container, then return.
-    var linkContainer = document.getElementById(ATTACH_CONTAINER_ID);
+    let linkContainer = document.getElementById(ATTACH_CONTAINER_ID);
     if (linkContainer == null) {
         // If there's no link container, then we create a new one
         linkContainer = document.createElement('p');
@@ -164,11 +164,11 @@ function addAttachLinksToPage() {
 
     let headerShow = document.querySelector('div.gh-header-show');
 
-    var prURL = window.location.href;
-    var prNum = getPRNum();
-    var prTitle = getPRTitle();
+    let prURL = window.location.href;
+    let prNum = getPRNum();
+    let prTitle = getPRTitle();
 
-    var bugIds = getBugIds(prTitle);
+    let bugIds = getBugIds(prTitle);
 
     // If there are no bug ids, just return
     if (bugIds.length == 0) {
@@ -176,7 +176,7 @@ function addAttachLinksToPage() {
     }
     linkContainer.appendChild(document.createTextNode('Attach this PR to bug: '));
 
-    var separator = document.createTextNode(', ');
+    let separator = document.createTextNode(', ');
     getAttachLinks(bugIds, prURL, prNum, prTitle).forEach((bugLink, i) => {
         if (i > 0) {
             linkContainer.appendChild(separator.cloneNode(false));
@@ -189,7 +189,7 @@ function addAttachLinksToPage() {
 
 
 function createBugsList(bugIds){
-    var bugsListContainer = document.getElementById(LIST_CONTAINER_ID);
+    let bugsListContainer = document.getElementById(LIST_CONTAINER_ID);
     if (bugsListContainer == null) {
         bugsListContainer = document.createElement('p');
         bugsListContainer.id = LIST_CONTAINER_ID;
@@ -200,9 +200,13 @@ function createBugsList(bugIds){
     while (bugsListContainer.firstChild) {
         bugsListContainer.removeChild(bugsListContainer.firstChild);
     }
+    if (!bugIds) {
+        return bugsListContainer;
+    }
+
     bugsListContainer.appendChild(document.createTextNode('View bugs in commits ('));
 
-    var openAll = document.createElement('a');
+    let openAll = document.createElement('a');
     openAll.href = LIST_BASE_URL + bugIds.join(',');
     openAll.id = 'open_all_bugzilla_links';
     openAll.target = '_blank';
@@ -210,8 +214,8 @@ function createBugsList(bugIds){
     bugsListContainer.appendChild(openAll);
     bugsListContainer.appendChild(document.createTextNode('): '));
 
-    var separator = document.createTextNode(', ');
-    getBugLinks(bugIds).forEach(function(bugLink, i){
+    let separator = document.createTextNode(', ');
+    getBugLinks(bugIds).forEach((bugLink, i) => {
         if (i > 0) {
             bugsListContainer.appendChild(separator.cloneNode(false));
         }
@@ -223,18 +227,18 @@ function createBugsList(bugIds){
 
 
 function addBugListToPage() {
-    var url = new URL(window.location.href);
-    var parentElement;
-    var bugIds;
+    let url = new URL(window.location.href);
+    let parentElement;
+    let bugIds;
 
     // If this is a compare page
     if (isComparePage(url)) {
         bugIds = [];
         let elements = document.querySelectorAll('a.message, div.commit-desc pre');
-        Array.prototype.forEach.call(elements, function(el) {
+        Array.prototype.forEach.call(elements, (el) => {
             bugIds = bugIds.concat(getBugIds(el.textContent));
         });
-        var insertBeforeEl = document.getElementById('commits_bucket');
+        let insertBeforeEl = document.getElementById('commits_bucket');
         parentElement = insertBeforeEl.parentElement;
         parentElement.insertBefore(createBugsList(bugIds), insertBeforeEl);
         return;
@@ -258,7 +262,7 @@ function addMergeLinks() {
         return;
     }
 
-    var linkContainer = document.getElementById(MERGE_CONTAINER_ID);
+    let linkContainer = document.getElementById(MERGE_CONTAINER_ID);
     if (linkContainer == null) {
         // If there's no link container, then we create a new one
         linkContainer = document.createElement('p');
@@ -272,20 +276,18 @@ function addMergeLinks() {
         linkContainer.removeChild(linkContainer.firstChild);
     }
 
-    var prNum = getPRNum();
-    var prTitle = getPRTitle();
-    var prUrl = getPRUrl();
-    var bugIds = getBugIds(prTitle);
+    let prNum = getPRNum();
+    let prTitle = getPRTitle();
+    let prUrl = getPRUrl();
+    let bugIds = getBugIds(prTitle);
 
     // If there are no bug ids, just return
     if (bugIds.length == 0) {
         return;
     }
 
-    linkContainer.appendChild(document.createTextNode('Add merge comment to bug: '));
-
     // See if there's been a merge
-    var state = document.querySelector('div.State.State--purple');
+    let state = document.querySelector('div.State.State--purple');
     if (state === null) {
         return;
     }
@@ -294,15 +296,15 @@ function addMergeLinks() {
         return;
     }
 
+    linkContainer.appendChild(document.createTextNode('Add merge comment to bug: '));
+
     // Find the merge commit event and the bits we want
     let elements = document.querySelectorAll('h3.discussion-item-header');
-    var author = '';
-    var commitSha = '';
-    var commitUrl = '';
+    let author = '';
+    let commitSha = '';
+    let commitUrl = '';
 
-    // This goes through all the events to figure out the merge commit.
-    // NOTE(willkg): this probably works poorly if someone reverted and
-    // re-merged.
+    // This goes through all the events to figure out the merge commit
     Array.prototype.forEach.call(elements, (el) => {
         if (el.textContent.match(/merged commit/)) {
             author = el.querySelector('a.author').textContent.trim();
@@ -316,7 +318,7 @@ function addMergeLinks() {
     });
 
     let headerShow = document.querySelector('div.gh-header-show');
-    var separator = document.createTextNode(', ');
+    let separator = document.createTextNode(', ');
 
     if (author && prNum && commitSha && commitUrl) {
         let bugLinks = bugIds.map((bugId) => {
@@ -355,20 +357,44 @@ function addMergeLinks() {
     headerShow.appendChild(linkContainer);
 }
 
-// Run for the current page
-addBugListToPage();
-addAttachLinksToPage();
-addMergeLinks();
 
-// Set up an observer to handle pjax loads that might end up on a PR
-let pjaxContainer = document.getElementById('js-repo-pjax-container');
-const pjaxContainerObserver = new window.MutationObserver((mutations) => {
+function runEverything() {
     addBugListToPage();
     addAttachLinksToPage();
     addMergeLinks();
-});
-pjaxContainerObserver.observe(pjaxContainer, {
+}
+
+runEverything();
+
+
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        var context = this;
+        var later = function() {
+            timeout = null;
+            func.apply(context);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+	  };
+};
+
+let debounceRunEverything = debounce(runEverything, 200);
+
+
+// Set up an observer to handle page changes
+let config = {
     childList: true,
     attributes: false,
-    characterData: false
-});
+    characterData: false,
+    subtree: true,
+};
+
+let pjaxContainer = document.getElementById('js-repo-pjax-container');
+if (pjaxContainer) {
+    const pjaxContainerObserver = new window.MutationObserver((mutations) => {
+        debounceRunEverything();
+    });
+    pjaxContainerObserver.observe(pjaxContainer, config);
+}
