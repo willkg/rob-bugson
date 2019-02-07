@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "rob-bugson",
-    "version": "1.4",
-    "description": "Linkify Bugzilla bug numbers; add 'Attach to bug' link to Bugzilla for GitHub pull requests.",
+    "version": "1.5",
+    "description": "Add links for viewing related bugs, attaching PR to bugs, and adding merge comments to bugs.",
     "homepage_url": "https://github.com/willkg/rob-bugson",
     "icons": {
         "48": "icons/rob-bugson-48.png"

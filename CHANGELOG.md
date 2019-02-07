@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.5 (February 6th, 2019)
+
+* feature: add merge comment links to add a comment to related Bugzilla
+  bugs with the relevant important data about the PR that got merged. (#15)
+* bug: fixed the damn links disappearing all the time. (#17)
+
+
 ## v1.4 (January 9th, 2019)
 
 * feature: add linked bug list to pull request and compare pagesl this
