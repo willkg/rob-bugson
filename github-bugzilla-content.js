@@ -200,7 +200,7 @@ function createBugsList(bugIds){
     while (bugsListContainer.firstChild) {
         bugsListContainer.removeChild(bugsListContainer.firstChild);
     }
-    if (!bugIds) {
+    if (bugIds.length == 0) {
         return bugsListContainer;
     }
 
