@@ -287,7 +287,7 @@ function addMergeLinks() {
     }
 
     // See if there's been a merge
-    let state = document.querySelector('div.State.State--purple');
+    let state = document.querySelector('.State.State--purple');
     if (state === null) {
         return;
     }
