@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.6 (March 13th, 2019)
+
+* bug: fix merge detection. (#21)
+
+
 ## v1.5 (February 6th, 2019)
 
 * feature: add merge comment links to add a comment to related Bugzilla

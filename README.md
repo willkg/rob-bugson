@@ -87,7 +87,7 @@ Use the
 
 ## Release
 
-1. complete changes, update `CHANGELOG.md`
+1. complete changes, update `manifest.json`, update `CHANGELOG.md`
 2. `git tag -s vX.Y`
 3. `make zip`
 4. rename zip file to use version number
