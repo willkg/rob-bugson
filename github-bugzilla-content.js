@@ -299,7 +299,7 @@ function addMergeLinks() {
     linkContainer.appendChild(document.createTextNode('Add merge comment to bug: '));
 
     // Find the merge commit event and the bits we want
-    let elements = document.querySelectorAll('h3.discussion-item-header');
+    let elements = document.querySelectorAll('div.TimelineItem-body');
     let author = '';
     let commitSha = '';
     let commitUrl = '';
