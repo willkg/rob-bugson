@@ -1,8 +1,13 @@
 # CHANGELOG
 
+## v1.6.2 (March 9th, 2021)
+
+* bug: fix merge detection. (#26)
+
+
 ## v1.6.1 (September 30th, 2019)
 
-* bug: fix merge detection. (#23)_
+* bug: fix merge detection. (#23)
 * feature: switch to semver!
 
 
