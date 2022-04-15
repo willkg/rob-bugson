@@ -3,9 +3,9 @@
 /**
  * JS that runs in the background and has access to browser tabs.
  */
-
 browser.runtime.onMessage.addListener(createAttachTab);
 browser.runtime.onMessage.addListener(createMergeCommentTab);
+
 
 /**
  * Sanitize text for inserting into JavaScript template.
@@ -55,7 +55,7 @@ async function createAttachTab(msg) {
         openerTabId: tabId,
         index: tabId
     });
-    var attValue = sanitizeForTemplate(msg.prURL);
+    var attValue = sanitizeForTemplate(msg.prUrl);
     var descValue = sanitizeForTemplate("pr " + msg.prNum + ": " + msg.prTitle);
 
     // We need to add values for this specific attachment, so we build the
@@ -79,7 +79,7 @@ async function createAttachTab(msg) {
     await browser.tabs.executeScript(newTab.id, {
         code: attachScript
     });
-    console.info('done!');
+    console.info('rob-bugson: done!');
 }
 
 /**
@@ -114,5 +114,5 @@ async function createMergeCommentTab(msg) {
     await browser.tabs.executeScript(newTab.id, {
         code: attachScript
     });
-    console.info('done!');
+    console.info('rob-bugson: done!');
 }
