@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.6.3 (April 15th, 2022)
+
+* bug: fix multiple click problem. (#24)
+
+
 ## v1.6.2 (March 9th, 2021)
 
 * bug: fix merge detection. (#26)
