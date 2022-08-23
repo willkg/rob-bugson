@@ -341,9 +341,14 @@ function addMergeLinks(pageKind, prNum, prTitle, prUrl, prState, bugIds) {
 
             // NOTE(willkg): the a tag we want is the one that has no id or class--that"s
             // really irritating
-            let commitElem = el.querySelector("a:not([class])");
-            commitUrl = "https://github.com" + commitElem.getAttribute("href");
-            commitSha = commitElem.textContent.trim();
+            let linkElems = el.querySelectorAll("a");
+            Array.prototype.forEach.call(linkElems, (elem) => {
+                let href = elem.getAttribute("href")
+                if (href && href.match(/\/commit\//)) {
+                    commitUrl = "https://github.com" + href;
+                    commitSha = elem.textContent.trim();
+                }
+            });
         }
     });
 
