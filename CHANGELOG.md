@@ -4,6 +4,7 @@
 
 * bug: fix merge link when using Refined GitHub addon. Thank you @badboy! (#32)
 
+
 ## v1.6.3 (April 15th, 2022)
 
 * bug: fix multiple click problem. (#24)
