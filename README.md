@@ -69,6 +69,7 @@ merge. Gilda clicks on **Save Changes** and the merge comment is saved.
 * Paul Maclanahan
 * Mike Cooper
 * Mike Kelly
+* Jan-Erik Rediger
 * you could be here!
 
 
