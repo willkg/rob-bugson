@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.6.4 (August 23rd, 2022)
+
+* bug: fix merge link when using Refined GitHub addon. Thank you @badboy! (#32)
+
 ## v1.6.3 (April 15th, 2022)
 
 * bug: fix multiple click problem. (#24)
@@ -30,7 +34,7 @@
 
 ## v1.4 (January 9th, 2019)
 
-* feature: add linked bug list to pull request and compare pagesl this
+* feature: add linked bug list to pull request and compare pages this
   comes from merging with Github List Bugzilla Bugs. (#10)
 
 
