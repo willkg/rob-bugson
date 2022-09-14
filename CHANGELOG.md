@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.6.5 (September 14th, 2022)
+
+* bug: fix attaching prs when there's a naughty `#` in the url. (#38)
+
 ## v1.6.4 (August 23rd, 2022)
 
 * bug: fix merge link when using Refined GitHub addon. Thank you @badboy! (#32)

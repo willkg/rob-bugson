@@ -94,10 +94,11 @@ Use the
 ## Release
 
 1. complete changes, update `manifest.json`, update `CHANGELOG.md`
-2. `git tag -s vX.Y`
-3. `make zip`
-4. rename zip file to use version number
-5. upload zip file to AMO
+2. land changes in main branc
+3. `git tag -s vX.Y`
+4. `make zip`
+5. rename zip file to use version number
+6. upload zip file to AMO
 
 
 ## Acknowledgements
