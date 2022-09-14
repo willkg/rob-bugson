@@ -55,15 +55,18 @@ function getPRTitle() {
 
 
 /**
- * Retrieve the PR url
+ * Retrieve the PR url.
+ *
+ * Make sure to drop # and anything after it because it makes Bugzilla sad.
  */
 function getPRUrl() {
-    return document.URL;
+    let url = document.URL;
+    return url.replace(/#.*/, "");
 }
 
 
 /**
- * Retrieve PR state
+ * Retrieve PR state.
  */
 function getPRState() {
     // See if there"s been a merge
@@ -96,7 +99,7 @@ function getSelectedTab() {
 
 
 /**
- * Get list of bug ids from PR title
+ * Get list of bug ids from PR title.
  */
 function getBugIdsFromPRTitle(text) {
     let match = BUG_RE.exec(text);
@@ -110,7 +113,7 @@ function getBugIdsFromPRTitle(text) {
 }
 
 /**
- * Get list of bug ids from commits
+ * Get list of bug ids from commits.
  */
 function getBugIdsFromCommits() {
     let bugIds = [];
