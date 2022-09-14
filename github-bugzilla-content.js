@@ -58,7 +58,11 @@ function getPRTitle() {
  * Retrieve the PR url
  */
 function getPRUrl() {
-    return document.URL;
+    let url = document.URL;
+    if (url.indexOf("#") != -1) {
+        url = url.substring(0, url.indexOf("#"));
+    }
+    return url;
 }
 
 
