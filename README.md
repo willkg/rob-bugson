@@ -94,10 +94,10 @@ Use the
 ## Release
 
 1. complete changes, update `manifest.json`, update `CHANGELOG.md`
-2. land changes in main branc
-3. `git tag -s vX.Y`
+2. land changes in main branch
+3. `git tag -s vX.Y.Z` (use semver)
 4. `make zip`
-5. rename zip file to use version number
+5. rename zip file to use version number; e.g. `rob-bugson-1.6.6.zip`
 6. upload zip file to AMO
 
 
