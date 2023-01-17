@@ -1,8 +1,14 @@
 # CHANGELOG
 
+## v1.6.6 (January 17th, 2023)
+
+* bug: fix css selectors for pr title and pr number. (#44)
+
+
 ## v1.6.5 (September 14th, 2022)
 
 * bug: fix attaching prs when there's a naughty `#` in the url. (#38)
+
 
 ## v1.6.4 (August 23rd, 2022)
 
