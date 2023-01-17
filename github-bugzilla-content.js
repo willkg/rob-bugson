@@ -32,7 +32,7 @@ const TAB_CONVERSATION = "Conversation";
  */
 function getPRNum() {
     // Get the PR number which is like "#4099"
-    let elem = document.querySelector("span.gh-header-number");
+    let elem = document.querySelector("h1.gh-header-title span");
     if (!elem) {
         return;
     }
@@ -46,7 +46,7 @@ function getPRNum() {
  * Retrieve the PR title from the pull request page.
  */
 function getPRTitle() {
-    let elem = document.querySelector("span.js-issue-title");
+    let elem = document.querySelector("bdi.js-issue-title");
     if (!elem) {
         return;
     }
