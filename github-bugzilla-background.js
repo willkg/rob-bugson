@@ -56,7 +56,7 @@ async function createAttachTab(msg) {
         index: tabId
     });
     var attValue = sanitizeForTemplate(msg.prUrl);
-    var descValue = sanitizeForTemplate("pr " + msg.prNum + ": " + msg.prTitle);
+    var descValue = sanitizeForTemplate(`[${msg.repoOrg}/${msg.repoName}] ${msg.prTitle} (#${msg.prNum})`);
 
     // We need to add values for this specific attachment, so we build the
     // template with local values and then execute the code in the tab.
@@ -102,7 +102,7 @@ async function createMergeCommentTab(msg) {
         index: tabId
     });
 
-    var mergeComment = `[${msg.author}](${msg.authorUrl}) merged [PR #${msg.prNum}: "${msg.prTitle}"](${msg.prUrl}) in [${msg.commitSha}](${msg.commitUrl}).`;
+    var mergeComment = `[${msg.author}](${msg.authorUrl}) merged PR [\[${msg.repoOrg}/${msg.repoName}\]: ${msg.prTitle} (#${msg.prNum})](${msg.prUrl}) in [${msg.commitSha}](${msg.commitUrl}).`;
     mergeComment = sanitizeForTemplate(mergeComment);
 
     var attachScript = `

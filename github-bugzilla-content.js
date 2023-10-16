@@ -27,6 +27,7 @@ const PR_STATE_UNKNOWN = "Unknown";
 const TAB_UNKNOWN = "Unknown";
 const TAB_CONVERSATION = "Conversation";
 
+
 /**
  * Retrieve the PR number from the pull request page.
  */
@@ -62,6 +63,21 @@ function getPRTitle() {
 function getPRUrl() {
     let url = document.URL;
     return url.replace(/#.*/, "");
+}
+
+
+/**
+ * Retrieve the repo organization and repo name.
+ */
+function getRepoInfo() {
+    // Grab the first two parts of the url path
+    let url = new URL(document.URL);
+    let pathname = url.pathname;
+    let pathParts = pathname.split("/");
+    return {
+        repoOrg: pathParts[1],
+        repoName: pathParts[2]
+    };
 }
 
 
@@ -145,7 +161,7 @@ function getBugLinks(bugIds) {
  * Attach links are set up with an event listener to sends the data to the
  * background script for opening and manipulating the new tab.
  */
-function getAttachLinks(bugIds, prUrl, prNum, prTitle) {
+function getAttachLinks(bugIds, repoInfo, prUrl, prNum, prTitle) {
     return bugIds.map((bugId) => {
         let link = document.createElement("a");
         link.href = "#";
@@ -157,6 +173,8 @@ function getAttachLinks(bugIds, prUrl, prNum, prTitle) {
             var sending = browser.runtime.sendMessage({
                 eventName: "attachLink",
                 attachUrl: url,
+                repoOrg: repoInfo.repoOrg,
+                repoName: repoInfo.repoName,
                 prUrl: prUrl,
                 prNum: prNum,
                 prTitle: prTitle
@@ -205,7 +223,7 @@ function isComparePage(url) {
  * Checks if there's already a container and if not, creates one with attach
  * links in it.
  */
-function addAttachLinksToPage(pageKind, prNum, prTitle, prUrl, bugIds) {
+function addAttachLinksToPage(pageKind, repoInfo, prNum, prTitle, prUrl, bugIds) {
     // If this is not a pull request page, then return.
     if (pageKind != "pr") {
         return;
@@ -235,7 +253,7 @@ function addAttachLinksToPage(pageKind, prNum, prTitle, prUrl, bugIds) {
     linkContainer.appendChild(document.createTextNode("Attach this PR to bug: "));
 
     let separator = document.createTextNode(", ");
-    getAttachLinks(bugIds, prUrl, prNum, prTitle).forEach((bugLink, i) => {
+    getAttachLinks(bugIds, repoInfo, prUrl, prNum, prTitle).forEach((bugLink, i) => {
         if (i > 0) {
             linkContainer.appendChild(separator.cloneNode(false));
         }
@@ -304,7 +322,7 @@ function addBugListToPage(pageKind, bugIds) {
  * Checks if this PR has been merged and if so and there are no merge
  * links, yet, creates them.
  */
-function addMergeLinks(pageKind, prNum, prTitle, prUrl, prState, bugIds) {
+function addMergeLinks(pageKind, repoInfo, prNum, prTitle, prUrl, prState, bugIds) {
     // If this is not a pull request page, then return.
     if (pageKind != "pr") {
         return;
@@ -371,6 +389,8 @@ function addMergeLinks(pageKind, prNum, prTitle, prUrl, prState, bugIds) {
                     "eventName": "mergeComment",
                     "bugUrl": url,
                     "author": author,
+                    "repoOrg": repoInfo.repoOrg,
+                    "repoName": repoInfo.repoName,
                     "prNum": prNum,
                     "prUrl": prUrl,
                     "prTitle": prTitle,
@@ -406,6 +426,7 @@ function runEverything() {
     let prTitle = getPRTitle();
     let prUrl = getPRUrl();
     let prState = getPRState();
+    let repoInfo = getRepoInfo();
     let selectedTab = getSelectedTab();
 
     let bugIds;
@@ -427,8 +448,8 @@ function runEverything() {
     // conversation tab
     if (pageKind == "compare" || (pageKind == "pr" && selectedTab == TAB_CONVERSATION)) {
         addBugListToPage(pageKind, bugIds);
-        addAttachLinksToPage(pageKind, prNum, prTitle, prUrl, bugIds);
-        addMergeLinks(pageKind, prNum, prTitle, prUrl, prState, bugIds);
+        addAttachLinksToPage(pageKind, repoInfo, prNum, prTitle, prUrl, bugIds);
+        addMergeLinks(pageKind, repoInfo, prNum, prTitle, prUrl, prState, bugIds);
     }
 }
 
