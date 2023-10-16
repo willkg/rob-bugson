@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.7.0 (October 16th, 2023)
+
+* bug: change attach and merge link descriptions to include repository
+  organization and name. (#48)
+
+
 ## v1.6.6 (January 17th, 2023)
 
 * bug: fix css selectors for pr title and pr number. (#44)
