@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.7.2 (In development)
+* feature: support hyphens for bug name regexp (#52)
+
 ## v1.7.1 (In development)
 * feature: add jest and initial unit test (#53)
 
