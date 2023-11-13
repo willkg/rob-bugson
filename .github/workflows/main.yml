@@ -1,0 +1,22 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    name: No-op
+    steps:
+      - uses: actions/checkout@v4.1.0
+
+      - name: No-op
+        run: echo "no-op"
