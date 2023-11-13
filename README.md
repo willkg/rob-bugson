@@ -70,6 +70,7 @@ merge. Gilda clicks on **Save Changes** and the merge comment is saved.
 * Mike Cooper
 * Mike Kelly
 * Jan-Erik Rediger
+* Bianca Danforth
 * you could be here!
 
 
