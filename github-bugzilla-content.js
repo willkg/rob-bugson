@@ -498,3 +498,7 @@ if (pjaxContainer) {
     pjaxContainerObserver.observe(pjaxContainer, config);
     console.info("rob-bugson: set up observer");
 }
+
+module.exports = {
+    getAttachLinks
+}

@@ -1,0 +1,23 @@
+{
+  "name": "rob-bugson",
+  "version": "1.7.1",
+  "description": "Add links for viewing related bugs, attaching PR to bugs, and adding merge comments to bugs.",
+  "main": "github-bugzilla-background.js",
+  "scripts": {
+    "test": "jest --env=jest-environment-jsdom"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willkg/rob-bugson.git"
+  },
+  "author": "willkg",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/willkg/rob-bugson/issues"
+  },
+  "homepage": "https://github.com/willkg/rob-bugson#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
