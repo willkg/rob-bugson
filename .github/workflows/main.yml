@@ -17,6 +17,11 @@ jobs:
     name: Test
     steps:
       - uses: actions/checkout@v4.1.0
-
-      - name: No-op
-        run: echo "no-op"
+      - name: Diagnostics
+        run: |
+          node --version
+          npm --version
+      - name: Unit Tests
+        run: |
+          npm install
+          npm test

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.7.1 (In development)
+* feature: add jest and initial unit test (#53)
+
 ## v1.7.0 (October 16th, 2023)
 
 * bug: change attach and merge link descriptions to include repository
