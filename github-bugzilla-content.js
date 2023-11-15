@@ -8,7 +8,7 @@
  */
 
 // Regexp to match against PR title
-const BUG_RE = /\b(ticket|bug|tracker item|issue)(?:s?:?\s*|-)([\d ,\+&#and]+)\b/i;
+const BUG_RE = /\b(ticket|bug|tracker item|issue)(?:s?:?\s*|-)([\d ,\+&#and]+)\b/ig;
 
 // Base url for attaching a github pr to a bug
 const ATTACH_BASE_URL = "https://bugzilla.mozilla.org/attachment.cgi?action=enter&bugid=";
@@ -118,14 +118,12 @@ function getSelectedTab() {
  * Get list of bug ids from PR title.
  */
 function getBugIdsFromPRTitle(text) {
-    let match = BUG_RE.exec(text);
-    let ret;
-    if (match) {
-        ret = new Set(match[2].split(/\D+/).filter((bugId) => !!bugId));
-    } else {
-        ret = new Set();
+    let bugSet = new Set();
+    const matches = text.matchAll(BUG_RE);
+    for (const match of matches) {
+        match[2].split(/\D+/).filter((bugId) => !!bugId).forEach((bugId) => bugSet.add(bugId));
     }
-    return Array.from(ret);
+    return Array.from(bugSet);
 }
 
 /**
