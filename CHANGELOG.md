@@ -2,6 +2,7 @@
 
 ## v1.7.1 (In development)
 * feature: add jest and initial unit test (#53)
+* feature: support hyphens for bug name regexp (#52)
 
 ## v1.7.0 (October 16th, 2023)
 

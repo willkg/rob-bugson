@@ -1,4 +1,7 @@
-const { getAttachLinks } = require("./github-bugzilla-content");
+const {
+    getAttachLinks,
+    getBugIdsFromPRTitle,
+} = require("./github-bugzilla-content");
 
 describe("Content script", () => {
     afterEach(() => {
@@ -17,6 +20,32 @@ describe("Content script", () => {
             const link = links[0];
             link.click();
             expect(sendMessage).toHaveBeenCalledTimes(bugIds.length);
-        })
-    })
+        });
+    });
+
+    describe("getBugIdsFromPRTitle", () => {
+        const prTitleSuffix = ": fix all the things";
+        test.each([
+            ["bug 111", ["111"]],
+            ["bug: 111", ["111"]],
+            ["bugs 111", ["111"]],
+            ["bug-111", ["111"]],
+        ])(
+            'given PR title prefix %p, returns %p',
+            (prTitlePrefix, expected) => {
+              expect(getBugIdsFromPRTitle(prTitlePrefix + prTitleSuffix)).toStrictEqual(expected);
+            },
+        );
+        test.each([
+            ["bugs 111, 222, & 333", ["111", "222", "333"]],
+            ["bugs 111, 222, and 333", ["111", "222", "333"]],
+            ["bugs: 111, 222, 333", ["111", "222", "333"]],
+            ["bug-111, bug-222, bug-333", ["111", "222", "333"]],
+        ])(
+            'given PR title prefix %p, returns %p',
+            (prTitlePrefix, expected) => {
+              expect(getBugIdsFromPRTitle(prTitlePrefix + prTitleSuffix)).toStrictEqual(expected);
+            },
+        );
+    });
   });
