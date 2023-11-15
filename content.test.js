@@ -24,33 +24,24 @@ describe("Content script", () => {
     });
 
     describe("getBugIdsFromPRTitle", () => {
-        let prTitlePrefix;
-        const prTitleSuffix = "fix all the things";
-        it("finds bug ID from a single bug number", () => {            
-            const testBugIds = [
-                "bug 111",
-                "bug: 111",
-                "bugs 111",
-                "bug-111",
-                "bug:-111",
-                "bugs-111"
-            ];
-            const expected = ["111"];
-            for (const testBugId of testBugIds) {
-                prTitlePrefix = `${testBugId}: `;
-                const prTitle = prTitlePrefix + prTitleSuffix;
-                const actual = getBugIdsFromPRTitle(prTitle);
-                expect(actual).toStrictEqual(expected);
-            }
-        });
+        const prTitleSuffix = ": fix all the things";
+        test.each([
+            ["bug 111", ["111"]],
+            ["bug: 111", ["111"]],
+            ["bugs 111", ["111"]],
+            ["bug-111", ["111"]],
+        ])(
+            'given PR title prefix %p, returns %p',
+            (prTitlePrefix, expected) => {
+              expect(getBugIdsFromPRTitle(prTitlePrefix + prTitleSuffix)).toStrictEqual(expected);
+            },
+          );
         it("finds bug IDs from multiple bug numbers", () => {            
             const testBugIds = [
                 "bugs 111, 222, & 333",
                 "bugs 111, 222, and 333",
                 "bugs: 111, 222, 333",
-                // Adding these test cases is covered in Issue #58
-                // "bug 111, bug 222, bug 333",
-                // "bug: 111, bug: 222, bug: 333",
+                // Adding this test case is covered in Issue #58
                 // "bug-111, bug-222, bug-333",
             ];
             const expected = ["111", "222", "333"];

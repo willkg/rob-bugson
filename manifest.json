@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "rob-bugson",
-    "version": "1.7.2",
+    "version": "1.7.1",
     "description": "Add links for viewing related bugs, attaching PR to bugs, and adding merge comments to bugs.",
     "homepage_url": "https://github.com/willkg/rob-bugson",
     "icons": {

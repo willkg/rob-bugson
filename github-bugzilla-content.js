@@ -8,7 +8,7 @@
  */
 
 // Regexp to match against PR title
-const BUG_RE = /\b(ticket|bug|tracker item|issue)s?:?[ -]*([\d ,\+&#and]+)\b/i;
+const BUG_RE = /\b(ticket|bug|tracker item|issue)(?:s?:?\s*|-)([\d ,\+&#and]+)\b/i;
 
 // Base url for attaching a github pr to a bug
 const ATTACH_BASE_URL = "https://bugzilla.mozilla.org/attachment.cgi?action=enter&bugid=";
