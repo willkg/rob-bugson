@@ -355,8 +355,17 @@ function addMergeLinks(pageKind, repoInfo, prNum, prTitle, prUrl, prState, bugId
 
     // This goes through all the events to figure out the merge commit
     Array.prototype.forEach.call(elements, (el) => {
-        if (el.textContent.match(/merged commit/)) {
-            author = el.querySelector("a.author").textContent.trim();
+        if (
+            el.textContent.match(/merged commit/) ||
+            // For PRs merged via a merge queue, we need two different events,
+            // since there isn't a single event that has both the GitHub username
+            // and the commit hash.
+            el.textContent.match(/added this pull request to the merge queue/) ||
+            el.textContent.match(/via the queue/)
+        ) {
+            if (!author) {
+                author = el.querySelector("a.author").textContent.trim();
+            } 
 
             // NOTE(willkg): the a tag we want is the one that has no id or class--that"s
             // really irritating
@@ -498,6 +507,10 @@ if (pjaxContainer) {
 }
 
 module.exports = {
+    addMergeLinks,
+    BUG_BASE_URL,
     getAttachLinks,
     getBugIdsFromPRTitle,
+    MERGE_CONTAINER_ID,
+    PR_STATE_MERGED,
 }
