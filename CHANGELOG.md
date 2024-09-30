@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.7.2 (September 30th, 2024)
+
+* bug: fix rob-bugson to recognize mergequeue merges. Thank you
+  @biancadanforth! (#65)
+
 ## v1.7.1 (November 16th, 2023)
 
 * feature: add jest and initial unit test. Thank you @biancadanforth! (#53)
