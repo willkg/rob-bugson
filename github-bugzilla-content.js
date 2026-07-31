@@ -41,7 +41,8 @@ function getPRNum() {
     }
 
     // Peel off the "#" and return
-    return elem.textContent.substring(1);
+    let hashIndex = elem.textContent.indexOf('#');
+    return elem.textContent.substring(hashIndex+1);
 }
 
 
@@ -104,7 +105,7 @@ function getPRState() {
  * For PRs, get the selected tab.
  */
 function getSelectedTab() {
-    let tab = document.querySelector('[role="tab"][aria-selected="true"]');
+    let tab = document.querySelector('[data-component="PH_Navigation"] a[aria-current="page"]');
     if (!tab) {
         return TAB_OTHER;
     }
@@ -366,7 +367,7 @@ function addMergeLinks(pageKind, repoInfo, prNum, prTitle, prUrl, prState, bugId
         ) {
             if (!author) {
                 author = el.querySelector("a.author").textContent.trim();
-            } 
+            }
 
             // NOTE(willkg): the a tag we want is the one that has no id or class--that"s
             // really irritating

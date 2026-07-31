@@ -30,9 +30,9 @@ const PR_HEADER_HTML = (title, num, status, selectedTab) => `
         <div data-component="PH_Navigation">
             <nav aria-label="Pull request navigation tabs">
                 <div role="tablist">
-                    <a role="tab" aria-selected="${selectedTab === "Conversation"}" href="#">Conversation</a>
-                    <a role="tab" aria-selected="${selectedTab === "Commits"}" href="#">Commits</a>
-                    <a role="tab" aria-selected="${selectedTab === "Files changed"}" href="#">Files changed</a>
+                    <a role="tab" ${selectedTab == "Conversation" ? 'aria-current="page"' : ''} href="#">Conversation</a>
+                    <a role="tab" ${selectedTab === "Commits" ? 'aria-current="page"' : ''} href="#">Commits</a>
+                    <a role="tab" ${selectedTab === "Files changed" ? 'aria-current="page"' : ''} href="#">Files changed</a>
                 </div>
             </nav>
         </div>
